@@ -9,6 +9,7 @@
 #import "ViewController.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *qMark;
 
 @end
 
@@ -17,13 +18,36 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    srand(time(0));
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (float)randomFloat {
+    return (rand() % 1000) / 1000.0f;
+}
+
+- (IBAction)swiped:(id)sender {
+    self.qMark.textColor = [UIColor colorWithRed:[self randomFloat] green:[self randomFloat] blue:[self randomFloat] alpha:1.0f];
+    
+    NSLog(@"You swiped");
+                            
+}
+                            
+- (IBAction)rotated:(UIRotationGestureRecognizer*)sender {
+    CGAffineTransform newTransform = CGAffineTransformRotate(self.qMark.transform, sender.rotation);
+
+    self.qMark.transform = newTransform;
+    sender.rotation = 0;
+    
+    NSLog(@"Rotation: %f", sender.rotation);
+
+}
+- (IBAction)pinched:(UIPinchGestureRecognizer*)sender {
+    
+    CGAffineTransform newTransform = CGAffineTransformScale(self.qMark.transform, sender.scale, sender.scale);
+    self.qMark.transform = newTransform;
+    sender.scale = 1.0f;
+    
+        NSLog(@"Pinch: %f", sender.scale);
 }
 
 @end
